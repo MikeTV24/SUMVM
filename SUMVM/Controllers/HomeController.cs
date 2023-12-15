@@ -11,7 +11,17 @@ namespace SUMVM.Controllers
         }
         public IActionResult Index(string term = "", int currentPage = 1)
         {
-            var movies = _movieService.List(term, true, currentPage);
+			// Retrieve the email and name from TempData
+			var userEmail = Request.Cookies["UserEmail"];
+			var userName = Request.Cookies["UserName"];
+			var sessionKey = Request.Cookies["UserEmail"];
+
+			// Pass the email and name to the Index view
+			ViewBag.UserEmail = userEmail;
+			ViewBag.UserName = userName;
+			ViewBag.SessionKey = sessionKey;
+
+			var movies = _movieService.List(term, true, currentPage);
             return View(movies);
         }
 

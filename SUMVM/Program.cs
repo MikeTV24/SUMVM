@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SUMVM.Models.Domain;
@@ -20,6 +22,23 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<DatabaseContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddSession();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+    .AddCookie()
+    .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+    {
+
+        options.ClientId = builder.Configuration.GetSection("GoogleKeys:ClientId").Value;
+        options.ClientSecret = builder.Configuration.GetSection("GoogleKeys:ClientSecret").Value;
+    });
+
+
+
 //builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/UserAuthentication/Login");
 
 
@@ -37,9 +56,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
+app.UseAuthentication(); // Add this line to enable authentication middleware
 app.UseAuthorization();
 
+app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using SUMVM.Models.DTO;
 using SUMVM.Repositories.Abstract;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace SUMVM.Controllers
 {
@@ -56,6 +60,46 @@ namespace SUMVM.Controllers
                 return RedirectToAction(nameof(Login));
             }
         }
+
+        public async Task Login2()
+        {
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
+                new AuthenticationProperties
+                {
+                    RedirectUri = Url.Action("GoogleResponse")
+                });
+        }
+
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Retrieve the user's email from claims
+            var userEmail = result.Principal.FindFirstValue(ClaimTypes.Email);
+            var userName = result.Principal.FindFirstValue(ClaimTypes.Name);
+
+            HttpContext.Session.SetString("MySessionKey", userEmail);
+
+
+            Response.Cookies.Append("UserEmail", userEmail);
+            Response.Cookies.Append("UserName", userName);
+            Response.Cookies.Append("SessionKey", userEmail);
+
+
+            // Store the email in TempData to pass it to the Index action
+
+
+            return RedirectToAction("Index", "Home", new { area = "" });
+        }
+
+
+
+        public async Task<IActionResult> Logout2()
+        {
+            await HttpContext.SignOutAsync();
+            return View("Index");
+        }
+
 
         public async Task<IActionResult> Logout()
         {
