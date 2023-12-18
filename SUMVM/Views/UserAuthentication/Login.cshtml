@@ -3,7 +3,7 @@
 }
 
 <form class="w-40" asp-action="Login" method="post">
-    <h2 class="pb-10">Login</h2>
+    <h2 class="pb-10">Admin Login</h2>
     <div class="input-container">
         <label asp-for="Username" class="w-40">Username</label>
         <input type="text" class="input" asp-for="Username">
@@ -34,12 +34,5 @@
         @*<a class="btn btn-sec" href="#">Add more</a>*@
     </div>
 
-    <div class="input-container">
-        <button class="btn btn-default" href="/UserAuthentication/Register">Register</button>
-        @*<a class="btn btn-sec" href="#">Add more</a>*@
-    </div>
-
-    <div class="col-5 text-end">
-        <a asp-controller="UserAuthentication" asp-action="Login2" class="btn btn-primary form-control">Sign-In with Google</a>
-    </div>
+    
 </form>

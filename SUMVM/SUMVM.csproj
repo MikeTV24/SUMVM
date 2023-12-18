@@ -7,10 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
+    <Compile Remove="Data\**" />
+    <Compile Remove="wwwroot\images\**" />
+    <Compile Remove="wwwroot\Upload\**" />
+    <Content Remove="Data\**" />
+    <Content Remove="wwwroot\images\**" />
+    <Content Remove="wwwroot\Upload\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="wwwroot\images\**" />
+    <EmbeddedResource Remove="wwwroot\Upload\**" />
+    <None Remove="Data\**" />
+    <None Remove="wwwroot\images\**" />
+    <None Remove="wwwroot\Upload\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\bootstrap\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\css\" />
@@ -20,7 +33,6 @@
     <Folder Include="wwwroot\lib\jquery-validation\dist\" />
     <Folder Include="wwwroot\lib\jquery\" />
     <Folder Include="wwwroot\lib\jquery\dist\" />
-    <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
 
   <ItemGroup>
